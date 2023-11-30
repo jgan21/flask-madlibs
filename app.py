@@ -12,11 +12,15 @@ debug = DebugToolbarExtension(app)
 def question_page():
     """Home page to Madlibs game with questions listed"""
 
-    # check how many inputs are in the story list
-    # loop through the list
-    # render the amount of inputs needed
-    prompt_block = ""
-    for prompt in silly_story.prompts:
-        prompt_block += render_template("madlib_prompt.html", prompt = prompt)
-    return prompt_block
+    prompts = silly_story.prompts
+    print("our prompts=", prompts)
+    return render_template("questions.html", prompts=prompts)
+
+
+@app.get("/results")
+def generate_results():
+    """Grab user inputs and produce story using Story instance."""
+
+    text = silly_story.get_result_text(request.args)
+    return render_template("results.html", text=text)
 
